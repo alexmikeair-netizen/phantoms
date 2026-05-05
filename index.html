@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BE AI — Sistema Operativo de tu Negocio Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #3a9bd5;
+    --blue-light: #5eb5e8;
+    --pink: #e82d6b;
+    --pink-light: #f05087;
+    --dark: #0a0a0a;
+    --dark2: #111111;
+    --dark3: #191919;
+    --dark4: #222222;
+    --gray: #2e2e2e;
+    --text: #e8e8e8;
+    --muted: #888;
+    --white: #ffffff;
+    --gradient: linear-gradient(135deg, var(--blue) 0%, var(--pink) 100%);
+    --gradient-r: linear-gradient(135deg, var(--pink) 0%, var(--blue) 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  nav .logo img { height: 44px; }
+  nav .nav-cta {
+    background: var(--gradient);
+    color: #fff; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 13px; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 10px 24px;
+    border: none; border-radius: 6px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: opacity 0.2s;
+  }
+  nav .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(58,155,213,0.14) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(232,45,107,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    color: var(--blue-light); margin-bottom: 28px;
+    border: 1px solid rgba(94,181,232,0.3); border-radius: 40px;
+    padding: 6px 16px;
+  }
+  .hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-light); display: block; animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:0.4; transform:scale(0.7);} }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 800; color: #fff;
+    max-width: 900px; margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero h1 .grad { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 300;
+    color: var(--muted); max-width: 680px; margin-bottom: 52px;
+    animation: fadeUp 0.8s 0.15s ease both;
+    font-style: italic;
+  }
+
+  .hero-promise {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 32px 40px; max-width: 700px;
+    margin-bottom: 52px; text-align: left;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+  .hero-promise p { font-size: 1.05rem; color: var(--text); line-height: 1.75; }
+  .hero-promise .tag {
+    display: inline-block; background: var(--gradient); border-radius: 4px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #fff; padding: 3px 10px; margin-bottom: 14px;
+  }
+
+  .hero-pills {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--dark3); border: 1px solid var(--gray);
+    border-radius: 40px; padding: 8px 16px;
+    font-size: 13px; color: var(--muted);
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pill .dot.b { background: var(--blue); }
+  .pill .dot.p { background: var(--pink); }
+  .pill .dot.g { background: #4ade80; }
+
+  @keyframes fadeUp { from{ opacity:0; transform:translateY(24px);} to{ opacity:1; transform:none;} }
+
+  /* ── SECTION BASE ── */
+  section { padding: 96px 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 18px;
+  }
+  .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 600px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); margin: 0 auto; max-width: 1100px; }
+
+  /* ── VIA SELECTOR ── */
+  .via-section { background: var(--dark2); }
+  .via-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+  .via-card {
+    background: var(--dark3); border-radius: 20px;
+    padding: 44px 40px; border: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden; transition: transform 0.3s, border-color 0.3s;
+  }
+  .via-card:hover { transform: translateY(-4px); }
+  .via-card.b2b { border-color: rgba(58,155,213,0.25); }
+  .via-card.b2c { border-color: rgba(232,45,107,0.25); }
+  .via-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .via-card.b2b::before { background: linear-gradient(90deg, var(--blue), var(--blue-light)); }
+  .via-card.b2c::before { background: linear-gradient(90deg, var(--pink), var(--pink-light)); }
+  .via-icon { font-size: 2.4rem; margin-bottom: 20px; }
+  .via-card h3 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+  .via-card .via-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; }
+  .via-profiles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .via-profile {
+    background: var(--dark4); border-radius: 8px; padding: 10px 14px;
+    font-size: 0.9rem; color: var(--text); display: flex; align-items: center; gap: 10px;
+  }
+  .via-profile::before { content: '→'; font-family: 'Syne', sans-serif; font-weight: 700; }
+  .via-card.b2b .via-profile::before { color: var(--blue); }
+  .via-card.b2c .via-profile::before { color: var(--pink); }
+  .via-cta {
+    display: inline-block; font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 12px 28px; border-radius: 8px; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .via-cta:hover { opacity: 0.85; }
+  .via-card.b2b .via-cta { background: linear-gradient(135deg, var(--blue), var(--blue-light)); color: #fff; }
+  .via-card.b2c .via-cta { background: linear-gradient(135deg, var(--pink), var(--pink-light)); color: #fff; }
+
+  /* ── ROADMAP ── */
+  .roadmap-b2b, .roadmap-b2c { padding: 96px 24px; }
+  .roadmap-b2b { background: var(--dark); }
+  .roadmap-b2c { background: var(--dark2); }
+
+  .roadmap-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 56px;
+  }
+  .roadmap-badge {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 40px; border: 1px solid;
+  }
+  .roadmap-badge.b2b { color: var(--blue); border-color: rgba(58,155,213,0.4); background: rgba(58,155,213,0.08); }
+  .roadmap-badge.b2c { color: var(--pink); border-color: rgba(232,45,107,0.4); background: rgba(232,45,107,0.08); }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid; grid-template-columns: 80px 1fr; gap: 0; position: relative;
+  }
+  .step-left {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: #fff;
+    position: relative; z-index: 1; flex-shrink: 0;
+  }
+  .step-line {
+    width: 2px; flex: 1; min-height: 40px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+  }
+  .step:last-child .step-line { display: none; }
+  .step-right { padding: 0 0 48px 28px; }
+  .step-tag {
+    display: inline-block; font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; font-family: 'Syne', sans-serif; font-weight: 700;
+    border-radius: 4px; padding: 2px 8px; margin-bottom: 10px;
+  }
+  .step-right h4 { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+  .step-right p { color: var(--muted); font-size: 0.95rem; margin-bottom: 14px; }
+
+  /* offer card inside step */
+  .offer-card {
+    background: var(--dark4); border-radius: 14px; padding: 24px 28px;
+    border: 1px solid rgba(255,255,255,0.07); margin-top: 4px;
+  }
+  .offer-price {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: #fff;
+    margin-bottom: 4px;
+  }
+  .offer-price span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+  .offer-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .offer-features { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .offer-features li { font-size: 0.9rem; color: var(--text); display: flex; gap: 8px; align-items: flex-start; }
+  .offer-features li::before { content: '✓'; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .offer-guarantee {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.85rem; color: var(--muted);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .offer-guarantee::before { content: '🛡'; flex-shrink: 0; }
+
+  .offer-cta {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 16px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 10px 22px; border-radius: 7px; border: none; cursor: pointer;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .offer-cta:hover { opacity: 0.82; }
+
+  /* b2b colors */
+  .b2b-color { color: var(--blue); }
+  .b2b-bg { background: rgba(58,155,213,0.12); color: var(--blue); }
+  .b2b-btn { background: linear-gradient(135deg, var(--blue), var(--blue-light)); color: #fff; }
+  .b2b-num { background: linear-gradient(135deg, var(--blue), var(--blue-light)); }
+
+  /* b2c colors */
+  .b2c-color { color: var(--pink); }
+  .b2c-bg { background: rgba(232,45,107,0.12); color: var(--pink); }
+  .b2c-btn { background: linear-gradient(135deg, var(--pink), var(--pink-light)); color: #fff; }
+  .b2c-num { background: linear-gradient(135deg, var(--pink), var(--pink-light)); }
+
+  /* ── ARCHITECT HERO OFFER ── */
+  .architect-offer {
+    background: var(--dark3); border-radius: 20px; padding: 48px 52px;
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative; overflow: hidden; margin-top: 16px;
+  }
+  .architect-offer::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--gradient);
+  }
+  .architect-offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .architect-offer h3 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 14px; }
+  .architect-offer .sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; }
+  .big-price {
+    font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1; margin-bottom: 6px;
+  }
+  .big-price-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 24px; }
+  .arch-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .arch-features li { font-size: 0.95rem; color: var(--text); display: flex; gap: 10px; align-items: flex-start; }
+  .arch-features li .ic { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .arch-cta {
+    display: inline-block; background: var(--gradient); color: #fff;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+    padding: 14px 32px; border-radius: 8px; margin-top: 28px; transition: opacity 0.2s;
+  }
+  .arch-cta:hover { opacity: 0.85; }
+  .zero-risk {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px; padding: 20px 24px; margin-top: 20px;
+  }
+  .zero-risk h5 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .zero-risk p { font-size: 0.88rem; color: var(--muted); }
+
+  /* ── COMPARISON ── */
+  .comparison { background: var(--dark); }
+  .comp-table { width: 100%; border-collapse: collapse; margin-top: 48px; }
+  .comp-table th {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 16px 20px; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .comp-table td {
+    padding: 14px 20px; font-size: 0.93rem; color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .comp-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .comp-table td:first-child { color: var(--text); font-weight: 500; }
+  .comp-table td:nth-child(2) { color: var(--blue); }
+  .comp-table td:nth-child(3) { color: var(--blue-light); }
+  .comp-table td:nth-child(4) { color: var(--pink); }
+  .comp-table th:nth-child(2) { color: var(--blue); }
+  .comp-table th:nth-child(3) { color: var(--blue-light); }
+  .comp-table th:nth-child(4) { color: var(--pink); }
+
+  /* ── PROCESS ── */
+  .process { background: var(--dark2); }
+  .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2px; margin-top: 56px; }
+  .proc-step {
+    background: var(--dark3); padding: 32px 28px; position: relative;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .proc-step:first-child { border-radius: 16px 0 0 16px; }
+  .proc-step:last-child { border-radius: 0 16px 16px 0; }
+  .proc-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem;
+    color: rgba(255,255,255,0.06); margin-bottom: 16px; line-height: 1;
+  }
+  .proc-step h4 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .proc-step p { font-size: 0.88rem; color: var(--muted); }
+
+  /* ── CTA FINAL ── */
+  .cta-final {
+    background: var(--dark); padding: 120px 24px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-final::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(58,155,213,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-final h2 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; color: #fff; margin-bottom: 20px; }
+  .cta-final p { color: var(--muted); font-size: 1.1rem; max-width: 560px; margin: 0 auto 48px; }
+  .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-main {
+    background: var(--gradient); color: #fff;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 16px 36px; border-radius: 8px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block; transition: opacity 0.2s;
+  }
+  .btn-main:hover { opacity: 0.85; }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+    padding: 16px 36px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15); cursor: pointer;
+    text-decoration: none; display: inline-block; transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark2); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 48px; display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer .f-logo img { height: 36px; }
+  footer p { font-size: 0.85rem; color: var(--muted); }
+  footer a { color: var(--blue); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    nav { padding: 16px 20px; }
+    .via-grid { grid-template-columns: 1fr; }
+    .architect-offer-grid { grid-template-columns: 1fr; }
+    .comp-table { font-size: 0.82rem; }
+    .comp-table td, .comp-table th { padding: 10px 12px; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .proc-step:first-child, .proc-step:last-child { border-radius: 0; }
+    footer { flex-direction: column; text-align: center; }
+    .roadmap-header { flex-direction: column; align-items: flex-start; }
+    .architect-offer { padding: 32px 24px; }
+    section { padding: 64px 20px; }
+  }
+  @media (max-width: 520px) {
+    .process-steps { grid-template-columns: 1fr; }
+    .hero { padding: 100px 20px 64px; }
+    .hero-promise { padding: 24px 20px; }
+    .via-card { padding: 28px 20px; }
+    .comp-table th:nth-child(3) { display: none; }
+    .comp-table td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAEABgADASIAAhEBAxEB/8QAGwABAAIDAQEAAAAAAAAAAAAAAAECAwQHBgX/xABPEAEAAQMCAAYNCAkEBAUFAAAA..." alt="BE AI" style="filter: brightness(0) invert(1);">
+    <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:0.02em;">BE AI</span>
+  </div>
+  <a href="https://wa.me/522205717032?text=Hola,%20vi%20la%20landing%20de%20BE%20AI%20y%20quiero%20agendar%20mi%20diagnóstico%20gratuito" class="nav-cta" target="_blank">Agendar Diagnóstico →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><span></span> AI Systems & Growth Partner</div>
+  <h1>Instalamos el <span class="grad">sistema operativo</span> de tu negocio digital en 30 días</h1>
+  <p class="hero-sub">o trabajamos gratis hasta lograrlo.</p>
+
+  <div class="hero-promise">
+    <span class="tag">La propuesta</span>
+    <p>Si eres experto con audiencia pero sin ingresos predecibles, coach con clientes pero sin sistema, o dueño de empresa que opera todo a mano — BE AI construye la infraestructura que convierte lo que ya tienes en <strong style="color:#fff;">5 cifras mensuales recurrentes</strong>, sin pauta, sin fricción técnica y sin que dependa de ti cada día.</p>
+    <p style="margin-top:14px;color:var(--blue-light);font-weight:600;font-size:0.95rem;">Solo ganamos cuando tú ganas. Cero riesgo. 100% sociedad de resultados.</p>
+  </div>
+
+  <div class="hero-pills">
+    <div class="pill"><span class="dot b"></span> Sin pauta publicitaria obligatoria</div>
+    <div class="pill"><span class="dot p"></span> Sin fricción técnica</div>
+    <div class="pill"><span class="dot g"></span> Revenue share — ganamos juntos</div>
+  </div>
+
+  <a href="#vias" class="btn-main">¿Cuál es tu camino? →</a>
+</section>
+
+<div class="divider"></div>
+
+<!-- ELIGE TU VÍA -->
+<section class="via-section" id="vias">
+  <div class="container">
+    <div class="section-label">Diagnóstico inicial</div>
+    <h2 class="section-title">¿Cuál es tu realidad?</h2>
+    <p class="section-sub">BE AI trabaja en dos vías distintas. Identifica la tuya para ver el roadmap y la oferta exacta que te corresponde.</p>
+
+    <div class="via-grid">
+      <div class="via-card b2b">
+        <div class="via-icon">🏢</div>
+        <h3>Vía B2B</h3>
+        <p class="via-desc">Tienes una empresa o negocio físico/digital que necesita infraestructura operativa con IA para escalar.</p>
+        <div class="via-profiles">
+          <div class="via-profile">Empresa con 2-500 empleados operando a mano</div>
+          <div class="via-profile">Agencia, clínica, inmobiliaria, e-commerce</div>
+          <div class="via-profile">Dueño atrapado en el negocio, sin sistemas</div>
+          <div class="via-profile">Negocio que ya vende, pero quiere escalar</div>
+        </div>
+        <a href="#b2b" class="via-cta">Ver mi roadmap B2B →</a>
+      </div>
+
+      <div class="via-card b2c">
+        <div class="via-icon">🎯</div>
+        <h3>Vía B2C / Creador</h3>
+        <p class="via-desc">Eres experto, profesional independiente o creador con conocimiento real que quieres monetizar digitalmente.</p>
+        <div class="via-profiles">
+          <div class="via-profile">Ya tienes audiencia en redes pero no monetizas</div>
+          <div class="via-profile">Experto sin presencia digital (médico, coach, etc.)</div>
+          <div class="via-profile">Quieres crear infoproductos o mentoría online</div>
+          <div class="via-profile">Coach/consultor que depende de clientes 1 a 1</div>
+        </div>
+        <a href="#b2c" class="via-cta">Ver mi roadmap B2C →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP B2B -->
+<section class="roadmap-b2b" id="b2b">
+  <div class="container">
+    <div class="roadmap-header">
+      <span class="roadmap-badge b2b">Vía B2B</span>
+      <h2 class="section-title" style="margin-bottom:0;">Tu roadmap: Root → Engineer → Architect</h2>
+    </div>
+    <p class="section-sub" style="margin-bottom:0;">En B2B el camino correcto es construir la base digital y los sistemas antes de escalar con IA profunda. Architect es la etapa de mayor impacto y llega al final.</p>
+
+    <div class="steps" style="margin-top:48px;">
+
+      <!-- STEP 1 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num b2b-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-right">
+          <span class="step-tag b2b-bg">Punto de entrada</span>
+          <h4>Phantom Root — Presencia & Base Digital</h4>
+          <p>Si tu negocio no tiene una base digital sólida, aquí empezamos. Sitio web profesional, branding inicial, Google Maps, WhatsApp Business integrado y los primeros sistemas de captura de leads. Sin esto, cualquier automatización cae en el vacío.</p>
+          <div class="offer-card">
+            <div class="offer-price">$800 USD <span>pago único · 3 meses</span></div>
+            <div class="offer-label b2b-color">Phantom Root B2B — Setup completo</div>
+            <ul class="offer-features">
+              <li>Landing web optimizada para conversión</li>
+              <li>Identidad visual básica + branding coherente</li>
+              <li>Posicionamiento Google Maps + reseñas</li>
+              <li>WhatsApp Business integrado con bot básico</li>
+              <li>Formularios de captura + CRM inicial</li>
+              <li>Dominio incluido</li>
+            </ul>
+            <div class="offer-guarantee">Garantía: si en 90 días no tienes presencia funcional y captando leads, seguimos trabajando sin costo adicional hasta lograrlo.</div>
+            <a href="https://wa.me/522205717032?text=Hola,%20quiero%20Phantom%20Root%20B2B%20para%20mi%20negocio" class="offer-cta b2b-btn" target="_blank">Quiero Phantom Root →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num b2b-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-right">
+          <span class="step-tag b2b-bg">Siguiente nivel</span>
+          <h4>Phantom Engineer — Automatización & Agentes de IA</h4>
+          <p>Una vez tienes la base, implementamos la infraestructura de IA. Agentes autónomos de ventas, atención, marketing y análisis. Automatizaciones 24/7, CRM integrado, dashboards en tiempo real. El precio varía según la complejidad de tu negocio — por eso iniciamos con una auditoría.</p>
+          <div class="offer-card">
+            <div class="offer-price">Desde $1,000 USD <span>fee de entrada + retainer mensual</span></div>
+            <div class="offer-label b2b-color">Phantom Engineer — Precio según auditoría</div>
+            <ul class="offer-features">
+              <li>Auditoría gratuita presencial o por videollamada</li>
+              <li>Hasta 6 agentes de IA implementados (ventas, soporte, marketing, análisis, operativo, ejecutivo)</li>
+              <li>Automatizaciones en n8n, Make o Zapier</li>
+              <li>CRM GoHighLevel configurado</li>
+              <li>Dashboard Looker Studio en tiempo real</li>
+              <li>El precio final depende de los sistemas de tu empresa</li>
+            </ul>
+            <div class="offer-guarantee">Primer paso: agenda tu auditoría gratuita. En la llamada definimos exactamente qué automatizaciones necesitas y el precio real.</div>
+            <a href="https://wa.me/522205717032?text=Hola,%20quiero%20agendar%20la%20auditoría%20gratuita%20para%20Phantom%20Engineer" class="offer-cta b2b-btn" target="_blank">Agendar Auditoría Gratis →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 — ARCHITECT B2B -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--gradient);">3</div>
+        </div>
+        <div class="step-right">
+          <span class="step-tag" style="background:rgba(255,255,255,0.08);color:#fff;">Etapa final · Máximo impacto</span>
+          <h4>Phantom Architect — Sociedad de Resultados</h4>
+          <p>Cuando tu negocio ya tiene base y sistemas, entramos como socios estratégicos. Construimos el sistema completo de captación, conversión y retención. Y solo cobramos cuando tú ganas.</p>
+          <div class="architect-offer">
+            <div class="architect-offer-grid">
+              <div>
+                <h3>Phantom Architect B2B</h3>
+                <p class="sub">La oferta que cambia las reglas. Sin fee de entrada. Sin riesgo para ti. Crecemos como socios.</p>
+                <div class="big-price">0 USD fee</div>
+                <p class="big-price-sub">Revenue share del 10–30% de los ingresos que generamos juntos</p>
+                <ul class="arch-features">
+                  <li><span class="ic">⚡</span> Implementación completa del funnel de ventas</li>
+                  <li><span class="ic">🤖</span> Agentes de IA para captación y conversión</li>
+                  <li><span class="ic">📊</span> Dashboard ejecutivo con KPIs críticos</li>
+                  <li><span class="ic">📢</span> Gestión activa de publicidad (si aplica)</li>
+                  <li><span class="ic">🤝</span> Posibilidad de equity en empresas estratégicas</li>
+                  <li><span class="ic">📈</span> Comisión solo por resultados — si no ganas, no cobramos</li>
+                </ul>
+                <a href="https://wa.me/522205717032?text=Hola,%20me%20interesa%20Phantom%20Architect%20B2B%20-%20Sociedad%20de%20resultados" class="arch-cta" target="_blank">Hablar de Architect →</a>
+              </div>
+              <div>
+                <div class="zero-risk">
+                  <h5>¿Por qué esto funciona?</h5>
+                  <p>Alineamos incentivos completamente. Nosotros solo ganamos cuando tú ganas. Eso significa que ponemos el máximo esfuerzo y los mejores sistemas en cada proyecto. No es consultoría. Es sociedad real.</p>
+                </div>
+                <div class="zero-risk" style="margin-top:16px;">
+                  <h5>¿Cuándo aplica Architect?</h5>
+                  <p>Solo para clientes que ya tienen la base digital y sistemas funcionando (Root + Engineer completados). Es el paso final del roadmap B2B, no el punto de entrada.</p>
+                </div>
+                <div class="zero-risk" style="margin-top:16px;">
+                  <h5>Sectores ideales B2B</h5>
+                  <p>Clínicas, inmobiliarias, agencias, e-commerce, formación profesional, B2B con ticket alto, servicios con modelo de recurrencia.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP B2C -->
+<section class="roadmap-b2c" id="b2c">
+  <div class="container">
+    <div class="roadmap-header">
+      <span class="roadmap-badge b2c">Vía B2C / Creador</span>
+      <h2 class="section-title" style="margin-bottom:0;">Tu roadmap: Root o directo a Architect</h2>
+    </div>
+    <p class="section-sub" style="margin-bottom:0;">En B2C el camino depende de si ya tienes audiencia y marca o si partes desde cero como experto sin presencia digital. Aquí no existe Engineer — el salto va de Root a Architect.</p>
+
+    <div class="steps" style="margin-top:48px;">
+
+      <!-- FORK -->
+      <div style="background:var(--dark3);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px 32px;margin-bottom:40px;">
+        <h4 style="color:#fff;font-size:1.1rem;margin-bottom:16px;">¿Cuál es tu situación actual?</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="background:rgba(232,45,107,0.08);border:1px solid rgba(232,45,107,0.2);border-radius:10px;padding:16px 18px;">
+            <div style="font-weight:700;color:var(--pink);font-size:0.9rem;margin-bottom:8px;">👤 Ya tienes audiencia y marca</div>
+            <p style="font-size:0.88rem;color:var(--muted);">Tienes seguidores activos, generas contenido pero no monetizas con productos digitales. Tu camino es directo a <strong style="color:#fff;">Phantom Architect</strong>.</p>
+          </div>
+          <div style="background:rgba(94,181,232,0.08);border:1px solid rgba(94,181,232,0.2);border-radius:10px;padding:16px 18px;">
+            <div style="font-weight:700;color:var(--blue-light);font-size:0.9rem;margin-bottom:8px;">🧪 Eres experto sin presencia digital</div>
+            <p style="font-size:0.88rem;color:var(--muted);">Tienes conocimiento real, clientes presenciales, pero casi no existes en redes. Tu camino inicia en <strong style="color:#fff;">Phantom Root</strong> y luego Architect.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1 B2C — ROOT -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num b2c-num">A</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-right">
+          <span class="step-tag b2c-bg">Si partes desde cero en redes</span>
+          <h4>Phantom Root — Construcción de Marca Personal</h4>
+          <p>Para expertos con autoridad real pero sin presencia digital. En 90 días te llevamos de 0 a 10,000 seguidores y 5 clientes nuevos usando contenido orgánico sin pagar anuncios. El cliente solo necesita dedicar 30-60 min por semana a grabar.</p>
+          <div class="offer-card">
+            <div class="offer-price">$800 USD <span>/ mes · contrato mínimo 3 meses</span></div>
+            <div class="offer-label b2c-color">Phantom Root B2C — Marca personal desde cero</div>
+            <ul class="offer-features">
+              <li>Diagnóstico y posicionamiento de nicho</li>
+              <li>8–20 reels/mes con guiones virales TCA</li>
+              <li>Secuencia diaria de historias para convertir (5-8 stories/día)</li>
+              <li>Sistema de CTA + palabra clave para captura de leads</li>
+              <li>Flujo de calificación de prospectos vía DM</li>
+              <li>Sesión mensual de revisión estratégica</li>
+            </ul>
+            <div class="offer-guarantee">Garantía: 10,000 seguidores + 5 clientes nuevos en 90 días. Si no se cumple, seguimos trabajando sin costo hasta lograrlo.</div>
+            <a href="https://wa.me/522205717032?text=Hola,%20quiero%20Phantom%20Root%20para%20construir%20mi%20marca%20personal" class="offer-cta b2c-btn" target="_blank">Quiero Phantom Root →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 B2C — ARCHITECT -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--gradient);">B</div>
+        </div>
+        <div class="step-right">
+          <span class="step-tag" style="background:rgba(255,255,255,0.08);color:#fff;">Si ya tienes audiencia · O al mes 4 de Root</span>
+          <h4>Phantom Architect — Monetiza tu Audiencia</h4>
+          <p>Tienes seguidores que confían en ti pero no has creado un infoproducto, mentoría grupal o comunidad que genere ingresos recurrentes sin depender de tu tiempo. Aquí BE AI lo construye por ti, tú pones el conocimiento, nosotros el sistema.</p>
+          <div class="architect-offer">
+            <div class="architect-offer-grid">
+              <div>
+                <h3>Phantom Architect B2C</h3>
+                <p class="sub">El modelo de co-producción de lanzamientos. Sin fee de entrada. Sin riesgo. Solo ganamos cuando tú facturas.</p>
+                <div class="big-price">$1,500 USD</div>
+                <p class="big-price-sub">Setup inicial + revenue share del 40–50% del lanzamiento generado</p>
+                <ul class="arch-features">
+                  <li><span class="ic">📐</span> Diseño del infoproducto o comunidad desde cero</li>
+                  <li><span class="ic">🔥</span> 4 semanas de calentamiento de audiencia (Stories estructuradas)</li>
+                  <li><span class="ic">💬</span> Grupo de WhatsApp + Masterclass de lanzamiento</li>
+                  <li><span class="ic">🏫</span> Configuración en Hotmart o Skool</li>
+                  <li><span class="ic">📞</span> Acompañamiento en llamadas de cierre</li>
+                  <li><span class="ic">🔄</span> Sistema evergreen para lanzamientos recurrentes</li>
+                </ul>
+                <a href="https://wa.me/522205717032?text=Hola,%20quiero%20Phantom%20Architect%20B2C%20para%20monetizar%20mi%20audiencia" class="arch-cta" target="_blank">Hablar de Architect →</a>
+              </div>
+              <div>
+                <div class="zero-risk">
+                  <h5>¿Qué necesitas para calificar?</h5>
+                  <p>Mínimo 300–500 views en tus últimas historias de Instagram. Nicho de dinero, salud o relaciones. Audiencia no quemada (no vendes todo el día). Autoridad real demostrable en tu área.</p>
+                </div>
+                <div class="zero-risk" style="margin-top:16px;">
+                  <h5>Proyección conservadora</h5>
+                  <p>Con 500 views en Stories → 15 ventas estimadas. A $2,000 ticket = <strong style="color:#fff;">$30,000 por lanzamiento</strong>. Tu parte (50-60%) = $15,000–$18,000 en una semana.</p>
+                </div>
+                <div class="zero-risk" style="margin-top:16px;">
+                  <h5>Plataformas disponibles</h5>
+                  <p>Hotmart, Skool, o sistema propio según el modelo de negocio. Podemos migrar cursos existentes de Hotmart a comunidad Skool con MRR recurrente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TABLA COMPARATIVA -->
+<section class="comparison">
+  <div class="container">
+    <div class="section-label">Resumen de servicios</div>
+    <h2 class="section-title">Todos los modelos de un vistazo</h2>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Detalle</th>
+          <th>Root B2B</th>
+          <th>Engineer</th>
+          <th>Architect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>¿Para quién?</td>
+          <td>Empresa sin base digital</td>
+          <td>Empresa con base, lista para IA</td>
+          <td>Empresa/Creador listo para escalar</td>
+        </tr>
+        <tr>
+          <td>Precio de entrada</td>
+          <td>$800 USD · 3 meses</td>
+          <td>Desde $1,000 USD + retainer</td>
+          <td>$0 fee / $1,500 USD B2C</td>
+        </tr>
+        <tr>
+          <td>Modelo de pago</td>
+          <td>Pago único setup</td>
+          <td>Setup + mensual</td>
+          <td>Revenue Share 10–50%</td>
+        </tr>
+        <tr>
+          <td>Primer paso</td>
+          <td>Contrato y kickoff</td>
+          <td>Auditoría gratuita</td>
+          <td>Llamada de diagnóstico</td>
+        </tr>
+        <tr>
+          <td>Tiempo de resultados</td>
+          <td>30–90 días</td>
+          <td>2–4 semanas deploy</td>
+          <td>1 lanzamiento en 30 días</td>
+        </tr>
+        <tr>
+          <td>Garantía</td>
+          <td>Presencia funcional o seguimos gratis</td>
+          <td>KPIs acordados desde el inicio</td>
+          <td>Sin resultado, sin cobro</td>
+        </tr>
+        <tr>
+          <td>Vía</td>
+          <td>B2B</td>
+          <td>B2B</td>
+          <td>B2B y B2C</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESO -->
+<section class="process">
+  <div class="container">
+    <div class="section-label">¿Cómo trabajamos?</div>
+    <h2 class="section-title">De la primera llamada a resultados medibles</h2>
+    <div class="process-steps">
+      <div class="proc-step">
+        <div class="proc-num">01</div>
+        <h4>Diagnóstico gratuito</h4>
+        <p>15-20 min. Entendemos tu negocio y confirmamos fit real. Sin venta agresiva.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">02</div>
+        <h4>Propuesta personalizada</h4>
+        <p>En 24-48h recibes un plan 100% tuyo con KPIs proyectados y estructura de inversión clara.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">03</div>
+        <h4>Kickoff e implementación</h4>
+        <p>Aprobado el plan, comenzamos. Sistemas activos en 2-4 semanas.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">04</div>
+        <h4>Reportes & optimización</h4>
+        <p>KPIs cada lunes. Reunión mensual de estrategia. Mejora continua basada en datos reales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>El momento es <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ahora</span></h2>
+  <p>Cada día sin sistema es un día que otro en tu sector está capturando los clientes que deberían ser tuyos. El diagnóstico es gratuito, sin compromiso y sin venta agresiva.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/522205717032?text=Hola,%20quiero%20agendar%20mi%20diagnóstico%20gratuito%20con%20BE%20AI" class="btn-main" target="_blank">Agendar diagnóstico gratuito →</a>
+    <a href="https://be-ai.cloud/planes-de-pago" class="btn-secondary" target="_blank">Ver planes completos</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">
+    <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:#fff;">BE AI</span>
+  </div>
+  <p>AI Systems & Growth Partner · <a href="https://phantomengineer.ai" target="_blank">phantomengineer.ai</a> · <a href="https://be-ai.cloud" target="_blank">be-ai.cloud</a></p>
+  <p style="font-size:0.8rem;">© 2025 BE AI · Documento confidencial para prospectos calificados</p>
+</footer>
+
+</body>
+</html>
